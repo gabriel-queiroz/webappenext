@@ -88,7 +88,7 @@ export default function Home() {
     try {
       const cnpj = localStorage.getItem("ifood_cnpj");
       if (isFirstMessage) {
-        const response = await fetch("http://localhost:8081/welcome", {
+        const response = await fetch("http://localhost:8080/welcome", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -103,7 +103,7 @@ export default function Home() {
           ];
         });
       } else {
-        const response = await fetch("http://localhost:8081/chat", {
+        const response = await fetch("http://localhost:8080/chat", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
