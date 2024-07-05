@@ -29,7 +29,6 @@ type ResponseIa = {
 };
 
 export default function Home() {
-  console.log("bem vindo");
   const { handleSubmit, isLoading, error, stop } = useChat({
     onResponse: (response) => {
       if (response) {
@@ -181,21 +180,27 @@ export default function Home() {
   };
 
   const handleUpdateData = async () => {
-    const cnpj = localStorage.getItem("ifood_cnpj");
-    const response = await fetch("http://localhost:8080/welcome", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ cnpj: cnpj }),
-    });
-    const data: ResponseIa = await response.json();
-    setMessages((oldMessages) => {
-      return [
-        ...oldMessages,
-        { role: "assistant", content: data.answer, id: uuidv4() },
-      ];
-    });
+    setLoadingSubmit(true);
+    try {
+      const cnpj = localStorage.getItem("ifood_cnpj");
+      const response = await fetch("http://localhost:8080/welcome", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ cnpj: cnpj }),
+      });
+      const data: ResponseIa = await response.json();
+      setMessages((oldMessages) => {
+        return [
+          ...oldMessages,
+          { role: "assistant", content: data.answer, id: uuidv4() },
+        ];
+      });
+    } catch (error) {
+    } finally {
+      setLoadingSubmit(false);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -203,7 +208,11 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (!localStorage.getItem("ifood_cnpj")) setOpen(true);
+    if (!localStorage.getItem("ifood_cnpj")) {
+      setOpen(true);
+    } else {
+      handleUpdateData();
+    }
   }, []);
 
   return (
@@ -223,7 +232,7 @@ export default function Home() {
         />
         <DialogContent className="flex flex-col space-y-4">
           <DialogHeader className="space-y-2">
-            <DialogTitle>Bem vindo ao Chat do Beni</DialogTitle>
+            <DialogTitle>Bem vindo ao Chat da LIA</DialogTitle>
             <DialogDescription>
               Preencha seu nome. Isso será usado para personalizar sua
               experiência
