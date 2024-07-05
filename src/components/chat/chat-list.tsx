@@ -8,6 +8,7 @@ import Image from "next/image";
 import CodeDisplayBlock from "../code-display-block";
 import { experimental_AssistantResponse } from "ai";
 import { marked } from "marked";
+import { useLocalStorageData } from "@/app/hooks/useLocalStorageData";
 
 export default function ChatList({
   messages,
@@ -19,7 +20,7 @@ export default function ChatList({
   loadingSubmit,
 }: ChatProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
-  const [name, setName] = React.useState<string>("");
+  const username = useLocalStorageData("ifood_user", "");
   const [localStorageIsLoading, setLocalStorageIsLoading] =
     React.useState(true);
 
@@ -30,14 +31,6 @@ export default function ChatList({
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
-  useEffect(() => {
-    const username = localStorage.getItem("ifood_user");
-    if (username) {
-      setName(username);
-      setLocalStorageIsLoading(false);
-    }
-  }, []);
 
   if (messages.length === 0) {
     return (
@@ -103,7 +96,7 @@ export default function ChatList({
                       className="object-contain"
                     />
                     <AvatarFallback>
-                      {name && name.substring(0, 2).toUpperCase()}
+                      {username && username.substring(0, 2).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                 </div>

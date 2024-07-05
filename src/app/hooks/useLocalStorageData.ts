@@ -1,20 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 export const useLocalStorageData = (key: string, initialValue: any) => {
   const [data, setData] = useState(initialValue);
-  
+
   useEffect(() => {
     const handleStorageChange = () => {
       const value = localStorage.getItem(key);
       if (value) {
-        setData(JSON.parse(value));
+        setData(value);
       }
     };
 
     const fetchData = () => {
       const value = localStorage.getItem(key);
       if (value) {
-        setData(JSON.parse(value));
+        setData(value);
       }
     };
 
@@ -22,10 +22,10 @@ export const useLocalStorageData = (key: string, initialValue: any) => {
     fetchData();
 
     // Listen for storage changes
-    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener("storage", handleStorageChange);
 
     return () => {
-      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener("storage", handleStorageChange);
     };
   }, [key]);
 
