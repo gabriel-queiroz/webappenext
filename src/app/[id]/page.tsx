@@ -89,11 +89,11 @@ export default function Home() {
       const cnpj = localStorage.getItem("ifood_cnpj");
       if (isFirstMessage) {
         const response = await fetch("http://localhost:8081/welcome", {
-          method: "GET",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          // body: JSON.stringify({ cnpj: cnpj }),
+          body: JSON.stringify({ cnpj: cnpj }),
         });
         const data: ResponseIa = await response.json();
         setMessages((oldMessages) => {
@@ -104,11 +104,11 @@ export default function Home() {
         });
       } else {
         const response = await fetch("http://localhost:8081/chat", {
-          method: "GET",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          // body: JSON.stringify({ cnpj: cnpj, user_input: input }),
+          body: JSON.stringify({ cnpj: cnpj, user_input: input }),
         });
         const data: ResponseIa = await response.json();
         setMessages((oldMessages) => {
