@@ -32,12 +32,14 @@ export default function ChatList({
   }, [messages]);
 
   useEffect(() => {
-    const username = localStorage.getItem("ollama_user");
+    const username = localStorage.getItem("ifood_user");
     if (username) {
       setName(username);
       setLocalStorageIsLoading(false);
     }
   }, []);
+
+  console.log(messages);
 
   if (messages.length === 0) {
     return (
@@ -124,26 +126,13 @@ export default function ChatList({
                     />
                   </Avatar>
                   <span className="bg-accent p-3 rounded-md max-w-xs sm:max-w-2xl overflow-x-auto">
-                    {/* Check if the message content contains a code block */}
-                    {message.content.split("```").map((part, index) => {
-                      if (index % 2 === 0) {
-                        return (
-                          // <React.Fragment key={index}>{part}</React.Fragment>
-                          <span
-                            key={index}
-                            dangerouslySetInnerHTML={{
-                              __html: marked.parse(part),
-                            }}
-                          />
-                        );
-                      } else {
-                        return (
-                          <pre className="whitespace-pre-wrap" key={index}>
-                            <CodeDisplayBlock code={part} lang="" />
-                          </pre>
-                        );
-                      }
-                    })}
+                    {console.log(message.content)}
+                    <span
+                      key={index}
+                      dangerouslySetInnerHTML={{
+                        __html: marked.parse(message.content),
+                      }}
+                    />
                     {isLoading &&
                       messages.indexOf(message) === messages.length - 1 && (
                         <span className="animate-pulse" aria-label="Typing">

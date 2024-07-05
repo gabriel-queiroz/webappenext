@@ -22,6 +22,9 @@ const formSchema = z.object({
   username: z.string().min(2, {
     message: "Name must be at least 2 characters.",
   }),
+  cnpj: z.string().min(14, {
+    message: "Cnpj must be at least 14 characters.",
+  }),
 });
 
 interface EditUsernameFormProps {
@@ -30,20 +33,23 @@ interface EditUsernameFormProps {
 
 export default function EditUsernameForm({ setOpen }: EditUsernameFormProps) {
   const [name, setName] = useState("");
+  const [cnpj, setCnpj] = useState("");
 
   useEffect(() => {
-    setName(localStorage.getItem("ollama_user") || "Anonymous");
+    setName(localStorage.getItem("ifood_user") || "");
+    setCnpj(localStorage.getItem("ifood_cnpj") || "");
   }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
+      cnpj: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    localStorage.setItem("ollama_user", values.username);
+    localStorage.setItem("ifood_user", values.username);
     window.dispatchEvent(new Event("storage"));
     toast.success("Nome atualizado com sucesso");
   }
@@ -71,13 +77,33 @@ export default function EditUsernameForm({ setOpen }: EditUsernameFormProps) {
                     value={name}
                     onChange={(e) => handleChange(e)}
                   />
-                  <Button type="submit">Alterar nome</Button>
                 </div>
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="cnpj"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Cnpj</FormLabel>
+              <FormControl>
+                <div className="md:flex gap-4">
+                  <Input
+                    {...field}
+                    type="text"
+                    value={cnpj}
+                    onChange={(e) => handleChange(e)}
+                  />
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Alterar dados</Button>
       </form>
     </Form>
   );

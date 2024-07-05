@@ -31,6 +31,8 @@
     "clsx": "^2.1.0",
     "emoji-mart": "^5.5.2",
     "framer-motion": "^11.0.3",
+    "global": "^4.4.0",
+    "json-server": "^1.0.0-beta.1",
     "langchain": "^0.1.13",
     "lucide-react": "^0.322.0",
     "next": "14.1.0",

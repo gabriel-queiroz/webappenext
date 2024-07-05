@@ -20,11 +20,11 @@ import { ChatRequestOptions } from "ai";
 import { Message, useChat } from "ai/react";
 import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 type ResponseIa = {
-  awnser: string;
+  answer: string;
   awnser_code: string;
 };
 
@@ -66,7 +66,7 @@ export default function Home() {
   //   }
 
   //   console.log("selectedModel:", selectedModel);
-  //   if (!localStorage.getItem("ollama_user")) {
+  //   if (!localStorage.getItem("ifood_user")) {
   //     setOpen(true);
   //   }
   // }, [selectedModel]);
@@ -86,32 +86,37 @@ export default function Home() {
     setInput("");
 
     try {
+      const cnpj = localStorage.getItem("ifood_cnpj");
       if (isFirstMessage) {
-        const response = await fetch("http://localhos:8081/welcome", {
-          method: "POST",
+        const response = await fetch("http://localhost:8081/welcome", {
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ cnpj: "cnpj" }),
+          // body: JSON.stringify({ cnpj: cnpj }),
         });
         const data: ResponseIa = await response.json();
-        setMessages([
-          ...messages,
-          { role: "assistant", content: data.awnser, id: uuidv4() },
-        ]);
+        setMessages((oldMessages) => {
+          return [
+            ...oldMessages,
+            { role: "assistant", content: data.answer, id: uuidv4() },
+          ];
+        });
       } else {
-        const response = await fetch("http://localhos:8081/chat", {
-          method: "POST",
+        const response = await fetch("http://localhost:8081/chat", {
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ cnpj: "cnpj", user_input: input }),
+          // body: JSON.stringify({ cnpj: cnpj, user_input: input }),
         });
         const data: ResponseIa = await response.json();
-        setMessages([
-          ...messages,
-          { role: "assistant", content: data.awnser, id: uuidv4() },
-        ]);
+        setMessages((oldMessages) => {
+          return [
+            ...oldMessages,
+            { role: "assistant", content: data.answer, id: uuidv4() },
+          ];
+        });
       }
       setLoadingSubmit(true);
     } catch (error) {
@@ -178,6 +183,10 @@ export default function Home() {
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
   };
+
+  useEffect(() => {
+    if (!localStorage.getItem("ifood_cnpj")) setOpen(true);
+  }, []);
 
   return (
     <main className="flex h-[calc(100dvh)] flex-col items-center ">

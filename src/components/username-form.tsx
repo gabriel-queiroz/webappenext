@@ -20,6 +20,7 @@ const formSchema = z.object({
   username: z.string().min(2, {
     message: "Name must be at least 2 characters.",
   }),
+  cnpj: z.string(),
 });
 
 interface UsernameFormProps {
@@ -31,12 +32,14 @@ export default function UsernameForm({ setOpen }: UsernameFormProps) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
+      cnpj: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (typeof window !== "undefined") {
-      localStorage.setItem("ollama_user", values.username);
+      localStorage.setItem("ifood_user", values.username);
+      localStorage.setItem("ifood_cnpj", values.cnpj);
     }
     window.dispatchEvent(new Event("storage"));
     setOpen(false);
@@ -53,6 +56,19 @@ export default function UsernameForm({ setOpen }: UsernameFormProps) {
               <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input placeholder="Insira o seu nome" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="cnpj"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>CNPJ</FormLabel>
+              <FormControl>
+                <Input placeholder="Insira o seu CNPJ" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
