@@ -29,6 +29,7 @@ type ResponseIa = {
 };
 
 export default function Home() {
+  console.log("bem vindo");
   const { handleSubmit, isLoading, error, stop } = useChat({
     onResponse: (response) => {
       if (response) {

@@ -227,7 +227,7 @@ export default function Home() {
         />
         <DialogContent className="flex flex-col space-y-4">
           <DialogHeader className="space-y-2">
-            <DialogTitle>Bem vindo ao Chat do Beni</DialogTitle>
+            <DialogTitle>Bem vindo ao Chat da LIA</DialogTitle>
             <DialogDescription>
               Preencha seu nome. Isso será usado para personalizar sua
               experiência
