@@ -112,6 +112,7 @@ export default function ChatList({
                   </Avatar>
                 </div>
               )}
+
               {message.role === "assistant" && (
                 <div className="flex items-end gap-2">
                   <Avatar className="flex justify-start items-center">

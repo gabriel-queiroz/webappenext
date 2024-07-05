@@ -85,7 +85,6 @@ export default function Home() {
     const isFirstMessage = messages.length === 0;
     setMessages([...messages, { role: "user", content: input, id: uuidv4() }]);
     setInput("");
-
     try {
       const cnpj = localStorage.getItem("ifood_cnpj");
       if (isFirstMessage) {
