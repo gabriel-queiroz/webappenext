@@ -81,6 +81,7 @@ export default function Home() {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoadingSubmit(true);
     const isFirstMessage = messages.length === 0;
     setMessages([...messages, { role: "user", content: input, id: uuidv4() }]);
     setInput("");
@@ -118,7 +119,6 @@ export default function Home() {
           ];
         });
       }
-      setLoadingSubmit(true);
     } catch (error) {
     } finally {
       setLoadingSubmit(false);
