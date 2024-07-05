@@ -234,8 +234,8 @@ export default function Home() {
           <DialogHeader className="space-y-2">
             <DialogTitle>Bem vindo ao Chat da LIA</DialogTitle>
             <DialogDescription>
-              Preencha seu nome. Isso será usado para personalizar sua
-              experiência
+              Preencha seu nome e o CPNJ da sua empresa. Isso será usado para
+              personalizar sua experiência
             </DialogDescription>
             <UsernameForm
               setOpen={setOpen}
