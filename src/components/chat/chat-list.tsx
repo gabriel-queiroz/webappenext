@@ -39,8 +39,6 @@ export default function ChatList({
     }
   }, []);
 
-  console.log(messages);
-
   if (messages.length === 0) {
     return (
       <div className="w-full h-full flex justify-center items-center">
@@ -126,7 +124,6 @@ export default function ChatList({
                     />
                   </Avatar>
                   <span className="bg-accent p-3 rounded-md max-w-xs sm:max-w-2xl overflow-x-auto">
-                    {console.log(message.content)}
                     <span
                       key={index}
                       dangerouslySetInnerHTML={{

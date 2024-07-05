@@ -51,13 +51,19 @@ export default function EditUsernameForm({ setOpen }: EditUsernameFormProps) {
   function onSubmit(values: z.infer<typeof formSchema>) {
     localStorage.setItem("ifood_user", values.username);
     window.dispatchEvent(new Event("storage"));
-    toast.success("Nome atualizado com sucesso");
+    toast.success("Nome e cnpj atualizado com sucesso");
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     form.setValue("username", e.currentTarget.value);
     setName(e.currentTarget.value);
+  };
+
+  const handleChangeCnpj = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    form.setValue("cnpj", e.currentTarget.value);
+    setCnpj(e.currentTarget.value);
   };
 
   return (
@@ -95,7 +101,7 @@ export default function EditUsernameForm({ setOpen }: EditUsernameFormProps) {
                     {...field}
                     type="text"
                     value={cnpj}
-                    onChange={(e) => handleChange(e)}
+                    onChange={(e) => handleChangeCnpj(e)}
                   />
                 </div>
               </FormControl>
