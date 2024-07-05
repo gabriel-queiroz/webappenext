@@ -88,12 +88,12 @@ export default function Home() {
     try {
       const cnpj = localStorage.getItem("ifood_cnpj");
       if (isFirstMessage) {
-        const response = await fetch("http://localhost:8081/welcome", {
-          method: "GET",
+        const response = await fetch("http://localhost:8080/welcome", {
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          // body: JSON.stringify({ cnpj: cnpj }),
+          body: JSON.stringify({ cnpj: cnpj }),
         });
         const data: ResponseIa = await response.json();
         setMessages((oldMessages) => {
@@ -103,12 +103,12 @@ export default function Home() {
           ];
         });
       } else {
-        const response = await fetch("http://localhost:8081/chat", {
-          method: "GET",
+        const response = await fetch("http://localhost:8080/chat", {
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          // body: JSON.stringify({ cnpj: cnpj, user_input: input }),
+          body: JSON.stringify({ cnpj: cnpj, user_input: input }),
         });
         const data: ResponseIa = await response.json();
         setMessages((oldMessages) => {
@@ -184,8 +184,30 @@ export default function Home() {
     setInput(e.target.value);
   };
 
+  const handleUpdateData = async () => {
+    const cnpj = localStorage.getItem("ifood_cnpj");
+    const response = await fetch("http://localhost:8080/welcome", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ cnpj: cnpj }),
+    });
+    const data: ResponseIa = await response.json();
+    setMessages((oldMessages) => {
+      return [
+        ...oldMessages,
+        { role: "assistant", content: data.answer, id: uuidv4() },
+      ];
+    });
+  };
+
   useEffect(() => {
-    if (!localStorage.getItem("ifood_cnpj")) setOpen(true);
+    if (!localStorage.getItem("ifood_cnpj")) {
+      setOpen(true);
+    } else {
+      handleUpdateData();
+    }
   }, []);
 
   return (
@@ -210,7 +232,10 @@ export default function Home() {
               Preencha seu nome. Isso será usado para personalizar sua
               experiência
             </DialogDescription>
-            <UsernameForm setOpen={setOpen} />
+            <UsernameForm
+              setOpen={setOpen}
+              handleUpdateData={handleUpdateData}
+            />
           </DialogHeader>
         </DialogContent>
       </Dialog>

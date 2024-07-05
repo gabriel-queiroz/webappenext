@@ -25,9 +25,13 @@ const formSchema = z.object({
 
 interface UsernameFormProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  handleUpdateData: () => void;
 }
 
-export default function UsernameForm({ setOpen }: UsernameFormProps) {
+export default function UsernameForm({
+  setOpen,
+  handleUpdateData,
+}: UsernameFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -43,6 +47,7 @@ export default function UsernameForm({ setOpen }: UsernameFormProps) {
     }
     window.dispatchEvent(new Event("storage"));
     setOpen(false);
+    handleUpdateData();
   }
 
   return (

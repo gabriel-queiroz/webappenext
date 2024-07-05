@@ -180,6 +180,24 @@ export default function Home() {
     // }
   };
 
+  const handleUpdateData = async () => {
+    const cnpj = localStorage.getItem("ifood_cnpj");
+    const response = await fetch("http://localhost:8080/welcome", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ cnpj: cnpj }),
+    });
+    const data: ResponseIa = await response.json();
+    setMessages((oldMessages) => {
+      return [
+        ...oldMessages,
+        { role: "assistant", content: data.answer, id: uuidv4() },
+      ];
+    });
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
   };
@@ -210,7 +228,10 @@ export default function Home() {
               Preencha seu nome. Isso será usado para personalizar sua
               experiência
             </DialogDescription>
-            <UsernameForm setOpen={setOpen} />
+            <UsernameForm
+              setOpen={setOpen}
+              handleUpdateData={handleUpdateData}
+            />
           </DialogHeader>
         </DialogContent>
       </Dialog>
